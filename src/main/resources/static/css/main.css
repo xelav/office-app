@@ -1,0 +1,90 @@
+
+.split {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+.left {
+    width: 30%;
+    left: 0;
+    background-color: #3b3c4b;
+    /*color: #e6ebf0;*/
+}
+
+.right {
+    width: 70%;
+    right: 0;
+    background-color: #f5f5f5;
+}
+
+.up {
+    height: 40%;
+    /*background: #dadadf;*/
+}
+
+.down {
+    height: 60%;
+    /*background: #dadadf;*/
+}
+
+.unselectable{
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.office-tree-element:hover{
+    background: #808085;
+}
+
+.selected-tree-element{
+    background: #cb444e;
+}
+
+.selected-tree-element:hover{
+    background: #dc3545;
+}
+
+.list-group-item{
+    background-color: #f2dede;
+}
+
+.pagination {
+    border: 2px solid #aaa;
+}
+.pagination > li > a {
+    border: 1px solid #bbb;
+    border-radius: 0px!important;
+}
+
+.just-padding {
+    padding: 15px;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+    margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > div > .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+.list-group.list-group-root > div > .list-group > .list-group-item {
+    padding-left: 50px;
+}
