@@ -1,18 +1,15 @@
 package org.xelav.officeapp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="office")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // json config
-public class Office extends BaseModel {
+@DiscriminatorValue("office")
+public class Office extends TreeElement {
 
     @Column(name="name", unique=true)
     private String name;
@@ -21,7 +18,7 @@ public class Office extends BaseModel {
     private String address;
 
     @OneToMany(
-            mappedBy = "office",
+            mappedBy = "treeParent",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

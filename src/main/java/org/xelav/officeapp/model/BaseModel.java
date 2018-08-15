@@ -5,10 +5,11 @@ import java.io.Serializable;
 
 @MappedSuperclass
 @SuppressWarnings("serial")
-public class BaseModel implements Serializable {
+public abstract class BaseModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen")
+    @SequenceGenerator(name="auto_gen", initialValue=20, allocationSize=20) // set initialValue to 20 to reserve some ids for DML scripts
     @Basic(optional = false)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private long id;

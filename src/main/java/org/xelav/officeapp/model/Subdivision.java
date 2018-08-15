@@ -5,16 +5,14 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="subdivision",
-        uniqueConstraints={
-        @UniqueConstraint(columnNames = {"office_id", "name"})
-})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // json config
-public class Subdivision extends BaseModel {
+@DiscriminatorValue("subdivision")
+public class Subdivision extends TreeElement {
 
     @Column(name="name")
     private String name;
@@ -22,13 +20,14 @@ public class Subdivision extends BaseModel {
     @Column(name="director_name")
     private String directorName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @NotNull
+    @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties({"subdivisions"})
 //    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //    @JsonIdentityReference(alwaysAsId = true)
-    private Office office;
+    private TreeElement treeParent;
 
     @OneToMany(
             mappedBy = "subdivision",
@@ -54,12 +53,12 @@ public class Subdivision extends BaseModel {
         this.directorName = directorName;
     }
 
-    public Office getOffice() {
-        return office;
+    public TreeElement getTreeParent() {
+        return treeParent;
     }
 
-    public void setOffice(Office office) {
-        this.office = office;
+    public void setTreeParent(TreeElement treeParent) {
+        this.treeParent = treeParent;
     }
 
     public List<Worker> getWorkers() {
