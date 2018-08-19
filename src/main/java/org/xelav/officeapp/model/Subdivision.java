@@ -20,14 +20,29 @@ public class Subdivision extends TreeElement {
     @Column(name="director_name")
     private String directorName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    public List<Subdivision> getSubdivisions() {
+        return subdivisions;
+    }
+
+    public void setSubdivisions(List<Subdivision> subdivisions) {
+        this.subdivisions = subdivisions;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnoreProperties({"subdivisions"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "subdivisions", "workers"})
 //    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //    @JsonIdentityReference(alwaysAsId = true)
     private TreeElement treeParent;
+
+    @OneToMany(
+            mappedBy = "treeParent",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Subdivision> subdivisions = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "subdivision",

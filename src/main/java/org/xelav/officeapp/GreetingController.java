@@ -33,6 +33,10 @@ public class GreetingController {
 
     @GetMapping("/home")
     public String greeting(Model model) {
+
+        List<Office> offices = dao.findAll();;
+        model.addAttribute("offices", offices);
+
         return "greeting";
     }
 
