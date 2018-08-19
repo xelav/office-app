@@ -12,11 +12,33 @@
 </head>
 <body>
 
+<#macro subdivisionsList subdivisions level parentId=-1>
+    <#if subdivisions?size != 0>
+        <div class="list-group">
+            <#list subdivisions as subdivision>
+                <span @click="setSelectedElement(${subdivision.id}, ${level}, ${parentId}, [<#list subdivision.subdivisions as s>`${s.name}`,</#list>])">
+                    <a
+                            class="list-group-item list-group-item-action unselectable"
+                            v-bind:class="[${subdivision.id} == selectedElement.id ? 'list-group-item-danger' : '']"
+                            style="padding-left : ${30*level + 20}px"
+                    >
+                        ${subdivision.name}
+                        <#if subdivision.subdivisions?size != 0>
+                            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+                        </#if>
+                    </a>
+                </span>
+                <@subdivisionsList level=level+1 subdivisions=subdivision.subdivisions parentId=subdivision.id/>
+            </#list>
+        </div>
+    </#if>
+</#macro>
 
 <div id="main-app">
     <div class="split left">
         <div v-if="" class="container">
             <button v-on:click="addOffice" type="button" class="btn btn-light">Добавить офис</button>
+            <button v-if="selectedElement.id !== undefined" v-on:click="addSubdivision" type="button" class="btn btn-light">Добавить подразделение</button>
             <button v-on:click="removeSelectedElement" type="button" class="btn btn-danger">Удалить элемент</button>
         </div>
         <hr/>
@@ -25,17 +47,7 @@
             <div class="just-padding">
 
                 <div class="list-group list-group-root well">
-
-                    <office-tree
-                            v-for="office in offices"
-                            :key="office.id"
-                            :office="office"
-                            :selected-element="selectedElement"
-                            :class="{'selected-tree-element': selectedElement.type === 'office' && selectedElement.id == office.id}"
-                            v-on:select-element="setSelectedElement"
-                            :is-selected="selectedElement.id==office.id"
-                    ></office-tree>
-
+                      <@subdivisionsList level=0 subdivisions=offices/>
                 </div>
 
             </div>
@@ -122,7 +134,9 @@
                     console.log(response.body.message);
                 }
             }
-        }
+        };
+
+        global.officeNameList = [<#list offices as o>`${o.name}`,</#list>]
 
     })(window);
 

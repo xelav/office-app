@@ -1,8 +1,9 @@
 function generateName(list, newObjName) {
     // funation for generating names for new objects like 'New Folder(3)'
     found = list.find(obj => {
-        return obj.name === newObjName
+        return obj === newObjName
     });
+    console.log({found})
 
     if (!found) {
         return newObjName;
@@ -12,7 +13,7 @@ function generateName(list, newObjName) {
     while(true) {
         generatedName = newObjName + ' (' + number + ')';
         found = list.find(obj => {
-            return obj.name === generatedName;
+            return obj === generatedName;
         });
         if (!found) {
             return generatedName;
@@ -55,21 +56,27 @@ var mainApp = new Vue({
                     this.handleError(response);
                 })
         },
-        setSelectedElement(element, type) {
-            console.log({element, type});
-            this.selectedElement = element;
-            this.selectedElement.type = type;
+        setSelectedElement(elementId, level, parentId, nameList) {
+            elementType = level == 0 ? 'office' : 'subdivision'
+            this.$http.get(
+                urls[elementType] + '/' + elementId
+            ).then(response => {
+                console.log('Success!', {response});
+                this.selectedElement = {...response.body, type: elementType};
+            }, response => {
+                this.handleError(response);
+            });
 
             // if (type === "subdivision")
             //     this.loadWorkers();
         },
         saveElement(element) {
-            console.log(JSON.stringify(element, null, 2));
             this.$http.put(
                 urls[element.type] + '/' + element.id,
                 element
             ).then(response => {
                 console.log('Success!', {response});
+                location.reload()
             }, response => {
                 this.handleError(response);
             });
@@ -78,7 +85,6 @@ var mainApp = new Vue({
             console.log(this.selectedElement);
             if (!(!Object.keys(this.selectedElement).length === 0
                 && this.selectedElement.constructor === Object)) {
-                console.log('asd2');
                 this.$http.delete(
                     urls[this.selectedElement.type] + '/' + this.selectedElement.id
                 ).then(response => {
@@ -92,7 +98,7 @@ var mainApp = new Vue({
             }
         },
         addOffice() {
-            newName = generateName(this.offices, 'Новый офис');
+            newName = generateName(window.officeNameList, 'Новый офис');
             console.log({newName});
             this.$http.post(
                 'offices',
@@ -106,14 +112,14 @@ var mainApp = new Vue({
                 this.handleError(response);
             });
         },
-        addSubdivision(office) {
-            newName = generateName(office.subdivisions, 'Новое подразделение');
+        addSubdivision() {
+            newName = generateName(this.selectedElement.nameList, 'Новое подразделение');
             console.log({newName});
             this.$http.post(
                 'subdivisions',
                 {
                     name: newName,
-                    office: office
+                    treeParent: this.selectedElement,
                 }
             ).then(response => {
                 console.log('Success!', {response});
@@ -124,6 +130,6 @@ var mainApp = new Vue({
         },
     },
     beforeMount() {
-        this.loadOffices();
+        //this.loadOffices();
     },
 })
