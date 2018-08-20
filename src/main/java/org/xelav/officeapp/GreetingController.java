@@ -1,6 +1,7 @@
 package org.xelav.officeapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class GreetingController {
     @GetMapping("/home")
     public String greeting(Model model) {
 
-        List<Office> offices = dao.findAll();;
+        List<Office> offices = dao.findAll( new Sort(Sort.Direction.ASC, "id") );;
         model.addAttribute("offices", offices);
 
         return "greeting";

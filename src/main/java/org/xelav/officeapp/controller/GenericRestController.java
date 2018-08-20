@@ -14,6 +14,10 @@ public class GenericRestController<T extends BaseModel> {
     @Autowired
     private BaseDao<T> dao;
 
+    private Sort sortByIdAsc() {
+        return new Sort(Sort.Direction.ASC, "id");
+    }
+
     @GetMapping
     public Page<T> list(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -21,7 +25,7 @@ public class GenericRestController<T extends BaseModel> {
             @RequestParam(value = "sortField", required = false) String sortField,
             @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection
             ) {
-        return new PageImpl<>(dao.findAll());
+        return new PageImpl<>(dao.findAll(sortByIdAsc()));
     }
 
     @PostMapping

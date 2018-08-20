@@ -42,6 +42,7 @@ public class Subdivision extends TreeElement {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @OrderBy("name ASC")
     private List<Subdivision> subdivisions = new ArrayList<>();
 
     public String getName() {
