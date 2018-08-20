@@ -23,7 +23,7 @@ function generateName(list, newObjName) {
     }
 }
 
-Vue.prototype.$eventBus = new Vue()
+Vue.prototype.$eventBus = new Vue({})
 
 Vue.http.options.root = '/api';
 
@@ -36,7 +36,9 @@ urls = {
 
 var mainApp = new Vue({
     el: '#main-app',
-    mixins: [window.handleErrorMixin],
+    mixins: [
+        window.handleErrorMixin,
+        window.handleSuccessMixin],
     data: {
         offices: [],
         selectedElement: {},
@@ -61,8 +63,12 @@ var mainApp = new Vue({
             this.$http.get(
                 urls[elementType] + '/' + elementId
             ).then(response => {
-                console.log('Success!', {response});
-                this.selectedElement = {...response.body, type: elementType};
+                this.handleSuccess(response)
+                this.selectedElement = {
+                    ...response.body,
+                    type: elementType,
+                    nameList: nameList,
+                };
             }, response => {
                 this.handleError(response);
             });
@@ -71,11 +77,12 @@ var mainApp = new Vue({
             //     this.loadWorkers();
         },
         saveElement(element) {
+            console.log('Saving: ', {element})
             this.$http.put(
                 urls[element.type] + '/' + element.id,
                 element
             ).then(response => {
-                console.log('Success!', {response});
+                this.handleSuccess(response)
                 location.reload()
             }, response => {
                 this.handleError(response);
@@ -88,7 +95,7 @@ var mainApp = new Vue({
                 this.$http.delete(
                     urls[this.selectedElement.type] + '/' + this.selectedElement.id
                 ).then(response => {
-                    console.log('Success!', {response});
+                    this.handleSuccess(response)
                     location.reload()
                 }, response => {
                     this.handleError(response);
@@ -106,7 +113,7 @@ var mainApp = new Vue({
                     name: newName
                 }
             ).then(response => {
-                console.log('Success!', {response});
+                this.handleSuccess(response)
                 location.reload();
             }, response => {
                 this.handleError(response);
@@ -122,7 +129,7 @@ var mainApp = new Vue({
                     treeParent: this.selectedElement,
                 }
             ).then(response => {
-                console.log('Success!', {response});
+                this.handleError(response);
                 location.reload()
             }, response => {
                 this.handleError(response);

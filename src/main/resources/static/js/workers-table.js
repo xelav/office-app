@@ -44,7 +44,10 @@ Vue.component('workers-table', {
     </div>
     
     `,
-    mixins: [window.handleErrorMixin],
+    mixins: [
+        window.handleErrorMixin,
+        window.handleSuccessMixin
+    ],
     props: {
         subdivision: Object,
         fields: {
@@ -91,7 +94,7 @@ Vue.component('workers-table', {
                 'workers/' + worker.id,
                 worker
             ).then(response => {
-                console.log('Success!', {response});
+                this.handleSuccess(response);
             }, response => {
                 this.handleError(response);
             });
@@ -102,7 +105,7 @@ Vue.component('workers-table', {
                 'workers/' + worker.id,
                 worker
             ).then(response => {
-                console.log('Success!', {response});
+                this.handleSuccess(response);
                 this.workers = this.workers.filter(function(e) { return e.id != worker.id })
             }, response => {
                 this.handleError(response);
@@ -116,7 +119,7 @@ Vue.component('workers-table', {
                     subdivision: this.subdivision
                 }
             ).then(response => {
-                console.log('Success!', {response});
+                this.handleSuccess(response);
                 this.loadWorkers();
             }, response => {
                 this.handleError(response);

@@ -35,6 +35,7 @@
 </#macro>
 
 <div id="main-app">
+
     <div class="split left">
         <div v-if="" class="container">
             <button v-on:click="addOffice" type="button" class="btn btn-light">Добавить офис</button>
@@ -55,6 +56,7 @@
     </div>
     <div class="split right">
         <div class="up">
+            <notifications></notifications>
             <div v-if="selectedElement.type == 'office'" class="container">
                 <div class="form-group">
                     <label>Название офиса</label>
@@ -114,6 +116,7 @@
             ></workers-table>
         </div>
     </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -131,7 +134,26 @@
             methods: {
                 handleError(response) {
                     console.log('Error!', {response});
-                    console.log(response.body.message);
+                    this.$eventBus.$emit("alert",
+                            {
+                                message: "Ошибка " + response.body.status + ": " +  response.body.error,
+                                alert: "danger",
+                                icon: "fa-exclamation-triangle"
+                            });
+                }
+            }
+        };
+
+        global.handleSuccessMixin = {
+            methods: {
+                handleSuccess(response){
+                    console.log('Success!', {response});
+                    this.$eventBus.$emit("alert",
+                            {
+                                message: "Успех!",
+                                alert: "success",
+                                icon: "fa-check"
+                            });
                 }
             }
         };
@@ -142,6 +164,7 @@
 
 </script>
 
+<script src="/js/notifications.js"></script>
 <script src="/js/office-tree.js"></script>
 <script src="/js/workers-table.js"></script>
 <script src="/js/main-app.js"></script>
