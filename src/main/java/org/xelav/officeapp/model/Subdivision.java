@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // json config
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler", "workers"})
 @DiscriminatorValue("subdivision")
 public class Subdivision extends TreeElement {
 
@@ -44,14 +44,6 @@ public class Subdivision extends TreeElement {
     )
     private List<Subdivision> subdivisions = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "subdivision",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JsonIgnore
-    private List<Worker> workers = new ArrayList<>();
-
     public String getName() {
         return name;
     }
@@ -74,14 +66,6 @@ public class Subdivision extends TreeElement {
 
     public void setTreeParent(TreeElement treeParent) {
         this.treeParent = treeParent;
-    }
-
-    public List<Worker> getWorkers() {
-        return workers;
-    }
-
-    public void setWorkers(List<Worker> workers) {
-        this.workers = workers;
     }
 
     @Override

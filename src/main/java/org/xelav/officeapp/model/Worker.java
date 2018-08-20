@@ -10,7 +10,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name="worker")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // json config
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Worker extends BaseModel {
 
     @Column(name="name")
@@ -30,8 +30,6 @@ public class Worker extends BaseModel {
     @JoinColumn(name = "subdivision_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties({"workers", "office"})
-//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-//    @JsonIdentityReference(alwaysAsId = true)
     private Subdivision subdivision;
 
     public String getName() {

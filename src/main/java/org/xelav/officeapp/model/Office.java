@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // json config
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @DiscriminatorValue("office")
 public class Office extends TreeElement {
 
