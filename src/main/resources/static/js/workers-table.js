@@ -148,6 +148,8 @@ Vue.component('workers-table', {
     },
     watch: {
         subdivision: function () {
+            this.pageNumber = 0;
+            this.totalPages = 0;
             this.loadWorkers();
         },
         sortField: function () {
