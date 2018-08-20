@@ -1,13 +1,12 @@
 package org.xelav.officeapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.xelav.officeapp.dao.BaseDao;
 import org.xelav.officeapp.model.BaseModel;
-
-import java.util.List;
 
 public class GenericRestController<T extends BaseModel> {
 

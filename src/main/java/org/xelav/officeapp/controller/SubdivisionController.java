@@ -11,8 +11,6 @@ import org.xelav.officeapp.dao.WorkerDao;
 import org.xelav.officeapp.model.Subdivision;
 import org.xelav.officeapp.model.Worker;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/subdivisions")
 public class SubdivisionController extends  GenericRestController<Subdivision> {
